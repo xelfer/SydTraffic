@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface MainWindow : UIViewController
+{
+    UIImageView *blackbox;
+    UIImageView *background;
+
+}
+
+- (IBAction)refresh:(id)sender;
+
 
 @end
