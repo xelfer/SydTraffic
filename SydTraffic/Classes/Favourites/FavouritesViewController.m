@@ -110,15 +110,19 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
+
     FavouriteCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"faveCell" forIndexPath:indexPath];
     
     cell.backgroundColor = [UIColor whiteColor];
     
-    NSArray *keyArray = [faveList allKeys];
-    NSDictionary *tmpcamera;
-    tmpcamera = [faveList objectForKey:[keyArray objectAtIndex:indexPath.row]];
+    // fave keys
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *favkeyspath = [documentsDirectory stringByAppendingPathComponent:@"FK.plist"];
+    NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
+    NSDictionary *tmpcamera = [faveList objectForKey:[favKeys objectAtIndex:indexPath.row]];
 
-    NSLog(@"camera processing: %@", [keyArray objectAtIndex:indexPath.row]);
+    //NSLog(@"camera processing: %@", [keyArray objectAtIndex:indexPath.row]);
     
     [cell.imageView setImageWithURL:[NSURL URLWithString:[tmpcamera objectForKey:@"url"]] placeholderImage:[UIImage imageNamed:@"trans50.png"]];
 
@@ -153,15 +157,15 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
-    NSLog(@"index is %d", ip.row);
-    
     if ([segue.identifier isEqualToString:@"camview"])
     {
         CameraViewController *destViewController = [segue destinationViewController];
         
-        NSArray *keyArray = [faveList allKeys];
-        NSDictionary *tmpcamera = [faveList objectForKey:[keyArray objectAtIndex:ip.row]];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *favkeyspath = [documentsDirectory stringByAppendingPathComponent:@"FK.plist"];
+        NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
+        NSDictionary *tmpcamera = [faveList objectForKey:[favKeys objectAtIndex:ip.row]];
 
         destViewController.thetitle = [tmpcamera objectForKey:@"name"];
         destViewController.theurl = [tmpcamera objectForKey:@"url"];

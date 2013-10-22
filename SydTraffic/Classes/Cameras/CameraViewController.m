@@ -40,37 +40,42 @@
 
 - (IBAction)fave:(id)sender
 {
-   
-    NSMutableDictionary *cameraList;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *favpath = [documentsDirectory stringByAppendingPathComponent:@"F.plist"];
     
-    // load the favourite list, or create the array if it's empty
-	NSMutableDictionary *favList;
-    favList = [[NSMutableDictionary alloc] initWithContentsOfFile:favpath];
+    // faves
+	NSString *favpath = [documentsDirectory stringByAppendingPathComponent:@"F.plist"];
+	NSMutableDictionary *favList = [[NSMutableDictionary alloc] initWithContentsOfFile:favpath];
+    
+    // fave keys
+    NSString *favkeyspath = [documentsDirectory stringByAppendingPathComponent:@"FK.plist"];
+    NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
+    
+    // cams
+    NSString *camPath = [documentsDirectory stringByAppendingPathComponent:@"C.plist"];
+    NSMutableDictionary *cameraList = [NSMutableDictionary dictionaryWithContentsOfFile:camPath];
+    
     if ([favList count] == 0)
     {
 		favList = [[NSMutableDictionary alloc] init];
-	}
-    
-    // load the camera list
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"C.plist"];
-    cameraList = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-
-    NSArray *keyArray = [favList allKeys];
-    // if it's in favourites, remove it
-    for (int favcount=0; favcount < [keyArray count]; favcount++)
-    {
-        if ([[[favList objectForKey:[keyArray objectAtIndex:favcount]] objectForKey:@"name"] isEqualToString:t.text]) {
+        favKeys = [[NSMutableArray alloc] init];
+	} else {
+        NSArray *keyArray = [favList allKeys];
+        // if it's in favourites, remove it
+        for (int favcount=0; favcount < [keyArray count]; favcount++)
+        {
+            if ([[[favList objectForKey:[keyArray objectAtIndex:favcount]] objectForKey:@"name"] isEqualToString:t.text]) {
             
-			[favList removeObjectForKey:[keyArray objectAtIndex:favcount]];
-			[favList writeToFile:favpath atomically:YES];
-            [fave setImage:[UIImage imageNamed:@"unfave.png"]];
-
-            return;
+                [favList removeObjectForKey:[keyArray objectAtIndex:favcount]];
+                [favList writeToFile:favpath atomically:YES];
+                
+                [favKeys removeObject:[keyArray objectAtIndex:favcount]];
+                [favKeys writeToFile:favkeyspath atomically:YES];
+                
+                [fave setImage:[UIImage imageNamed:@"unfave.png"]];
+                return;
+            }
         }
-    
     }
     
     // if we're this far, it's not in favourites, add it
@@ -103,14 +108,15 @@
       @"lat" : la
       };
     
-    //int key = [favList count] + 1;
     NSDate *today = [NSDate date];
-    
-    NSLog(@"the date is %@", today);
     NSString *datekey = [NSString stringWithFormat:@"%@", today];
-    
+
+    [favKeys addObject:datekey];
     [favList setObject:thisCamera forKey:datekey];
+    
+    [favKeys writeToFile:favkeyspath atomically:YES];
 	[favList writeToFile:favpath atomically:YES];
+    
     [fave setImage:[UIImage imageNamed:@"fave.png"]];
     
 }
