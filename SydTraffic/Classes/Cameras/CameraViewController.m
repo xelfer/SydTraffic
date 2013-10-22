@@ -99,8 +99,7 @@
     
     // add dictionary to dictionary, write to disk
     NSDictionary *thisCamera =
-    @{
-      @"name" : n,
+    @{@"name" : n,
       @"desc" : d,
       @"url"  : u,
       @"region" : r,

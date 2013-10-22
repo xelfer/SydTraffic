@@ -22,6 +22,14 @@
 }
 
 
+@property (retain, strong) IBOutlet UIToolbar *toolBar;
+@property (retain, strong) UIImageView *background;
+@property (retain, strong) IBOutlet UICollectionView *collection;
+@property (retain, strong) NSMutableDictionary *faveList;
+@property (retain, strong) NSIndexPath *ip;
+@property (retain, strong) IBOutlet UILabel *label;
+@property (retain, strong) IBOutlet UIImageView *image;
+@property (retain, strong) IBOutlet UIView *smallview;
 
 - (IBAction)back:(id)sender;
 

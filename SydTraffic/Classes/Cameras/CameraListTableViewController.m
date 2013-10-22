@@ -148,7 +148,7 @@
     }
     
     int intSection = section;
-    int returnval;
+    int returnval = 0;
     
     switch (intSection) {
         case 0:
@@ -168,7 +168,7 @@
             break;
     }
     
-    return returnval;;
+    return returnval;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -109,6 +109,7 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 - (void)dealloc {
     [self invalidatesScrollTimer];
     [self removeObserver:self forKeyPath:kLXCollectionViewKeyPath];
+    NSLog(@"dealloc");
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {

@@ -19,6 +19,8 @@
 
 @implementation FavouritesViewController
 
+@synthesize toolBar, background, collection, faveList, ip, label, image, smallview;
+
 - (IBAction)back:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -46,7 +48,7 @@
 	// Do any additional setup after loading the view.
     
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    [collection setCollectionViewLayout:layout];
+    [self.collection setCollectionViewLayout:layout];
     
     // put a transparent image under the status bar to make it translucent but tinted
     UIImageView *coverStatus = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
@@ -55,21 +57,21 @@
     [self.view sendSubviewToBack:coverStatus];
     
     // set the background
-    background = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
+    self.background = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
                                                               [UIScreen mainScreen].bounds.size.width,
                                                               [UIScreen mainScreen].bounds.size.height)];
     
     // fill the image from the top, to suit 3.5 inch devices
-    [background setContentMode:UIViewContentModeScaleAspectFill];
-    background.image = [UIImage imageNamed:[NSString stringWithFormat:@"bg%@.jpg",[SharedData sharedInstance].bg]];
+    [self.background setContentMode:UIViewContentModeScaleAspectFill];
+    self.background.image = [UIImage imageNamed:[NSString stringWithFormat:@"bg%@.jpg",[SharedData sharedInstance].bg]];
     [self.view addSubview:background];
     [self.view sendSubviewToBack:background];
     
-    [toolBar setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
-    [collection setBackgroundColor:[UIColor clearColor]];
+    [self.toolBar setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
+    [self.collection setBackgroundColor:[UIColor clearColor]];
 
     // gets rid of the top 1px white border above the toolbar
-    toolBar.clipsToBounds = YES;
+    self.toolBar.clipsToBounds = YES;
     
     //[collection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"faveCell"];
 
@@ -92,19 +94,19 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"F.plist"];
-    faveList = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    self.faveList = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
     
     // if it's nil, there was no file, and no favourites
-    if ([faveList count] == 0)
+    if ([self.faveList count] == 0)
     {
-        smallview.hidden = FALSE;
+        self.smallview.hidden = FALSE;
         return 0;
     }
 
     // this far means we have at least one favourite
-    smallview.hidden = TRUE;
+    self.smallview.hidden = TRUE;
     
-    return [faveList count];
+    return [self.faveList count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -169,7 +171,7 @@
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ip = indexPath;
+    self.ip = indexPath;
     [self performSegueWithIdentifier:@"camview" sender:self];
 }
 
@@ -222,9 +224,10 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [collection reloadData];
+    //[self.collection reloadData];
   
 }
+
 
 
 @end
