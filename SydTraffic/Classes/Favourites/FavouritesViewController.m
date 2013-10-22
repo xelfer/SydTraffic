@@ -12,6 +12,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "CameraViewController.h"
 
+
 @interface FavouritesViewController ()
 
 @end
@@ -43,6 +44,9 @@
     
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    [collection setCollectionViewLayout:layout];
     
     // put a transparent image under the status bar to make it translucent but tinted
     UIImageView *coverStatus = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
@@ -147,6 +151,21 @@
  return [[UICollectionReusableView alloc] init];
 }*/
 
+- (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *favkeyspath = [documentsDirectory stringByAppendingPathComponent:@"FK.plist"];
+    NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
+    
+    
+    id object = [favKeys objectAtIndex:fromIndexPath.item];
+    [favKeys removeObjectAtIndex:fromIndexPath.item];
+    [favKeys insertObject:object atIndex:toIndexPath.item];
+    [favKeys writeToFile:favkeyspath atomically:YES];
+}
+
+
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -173,6 +192,8 @@
    
     }
 }
+
+
 
 
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LXReorderableCollectionViewFlowLayout.h"
 
 @interface FavouritesViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {
@@ -18,8 +19,6 @@
     IBOutlet UILabel *label;
     IBOutlet UIImageView *image;
     IBOutlet UIView *smallview;
-    
-
 }
 
 
