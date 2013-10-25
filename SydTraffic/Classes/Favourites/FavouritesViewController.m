@@ -43,12 +43,15 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     [self.collection setCollectionViewLayout:layout];
+    
+    NSLog(@"view loaded %@", layout);
+
+    
     
     // put a transparent image under the status bar to make it translucent but tinted
     UIImageView *coverStatus = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
