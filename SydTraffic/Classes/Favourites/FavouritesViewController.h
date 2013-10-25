@@ -22,14 +22,14 @@
 }
 
 
-@property (retain, strong) IBOutlet UIToolbar *toolBar;
-@property (retain, strong) UIImageView *background;
-@property (retain, strong) IBOutlet UICollectionView *collection;
-@property (retain, strong) NSMutableDictionary *faveList;
-@property (retain, strong) NSIndexPath *ip;
-@property (retain, strong) IBOutlet UILabel *label;
-@property (retain, strong) IBOutlet UIImageView *image;
-@property (retain, strong) IBOutlet UIView *smallview;
+@property (atomic, strong) IBOutlet UIToolbar *toolBar;
+@property (atomic, strong) UIImageView *background;
+@property (atomic, strong) IBOutlet UICollectionView *collection;
+@property (atomic, strong) NSMutableDictionary *faveList;
+@property (atomic, strong) NSIndexPath *ip;
+@property (atomic, strong) IBOutlet UILabel *label;
+@property (atomic, strong) IBOutlet UIImageView *image;
+@property (atomic, strong) IBOutlet UIView *smallview;
 
 - (IBAction)back:(id)sender;
 

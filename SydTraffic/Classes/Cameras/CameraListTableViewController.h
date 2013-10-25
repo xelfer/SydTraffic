@@ -20,7 +20,9 @@
 - (IBAction)refresh:(id)sender;
 
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSDictionary *cameraList;
+@property (nonatomic, strong) UIImageView *background;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolBar;
 
 @end

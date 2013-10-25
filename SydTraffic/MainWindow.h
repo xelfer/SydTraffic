@@ -12,10 +12,13 @@
 {
     UIImageView *blackbox;
     UIImageView *background;
-
 }
+
+
 
 - (IBAction)refresh:(id)sender;
 
+@property (atomic, strong) UIImageView *blackbox;
+@property (atomic, strong) UIImageView *background;
 
 @end

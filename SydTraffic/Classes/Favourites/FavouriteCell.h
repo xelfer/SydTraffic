@@ -10,6 +10,6 @@
 
 @interface FavouriteCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (atomic, strong) IBOutlet UIImageView *imageView;
 
 @end

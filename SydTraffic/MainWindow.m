@@ -16,6 +16,7 @@
 
 
 @implementation MainWindow
+@synthesize blackbox, background;
 
 - (void)viewDidLoad
 {

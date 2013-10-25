@@ -15,6 +15,7 @@
 
 @implementation InfoViewController
 
+@synthesize background, versiontext, toolBar;
 
 - (IBAction)back:(id)sender
 {

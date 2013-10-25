@@ -18,5 +18,8 @@
 - (IBAction)back:(id)sender;
 - (IBAction)emailMe:(id)sender;
 
+@property (atomic, strong) UIImageView *background;
+@property (atomic, strong) IBOutlet UIToolbar *toolBar;
+@property (atomic, strong) IBOutlet UILabel *versiontext;
 
 @end

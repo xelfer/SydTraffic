@@ -16,7 +16,7 @@
 @end
 
 @implementation CameraListTableViewController
-@synthesize tableView;
+@synthesize tableView, cameraList, background, toolBar;
 
 - (void)refreshDisplay:(UITableView *)tableView
 {
