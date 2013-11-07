@@ -43,7 +43,6 @@
 {
     [SharedData sharedInstance].bg = [NSNumber numberWithInt:1+arc4random_uniform(13)];
     background.image = [UIImage imageNamed:[NSString stringWithFormat:@"bg%@.jpg",[SharedData sharedInstance].bg]];
-    NSLog(@"bg is %@", [SharedData sharedInstance].bg);
 }
 
 -(UIStatusBarStyle) preferredStatusBarStyle

@@ -19,14 +19,20 @@ PODS:
   - AFNetworking/Serialization (2.0.1)
   - AFNetworking/UIKit (2.0.1):
     - AFNetworking/NSURLConnection
-  - LXReorderableCollectionViewFlowLayout (0.1.0.beta1)
+  - LXReorderableCollectionViewFlowLayout (HEAD based on 0.1.0.beta1)
+  - SVProgressHUD (HEAD based on 0.9)
+  - SVWebViewController (0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
-  - LXReorderableCollectionViewFlowLayout (= 0.1.0.beta1)
+  - LXReorderableCollectionViewFlowLayout (HEAD)
+  - SVProgressHUD (HEAD)
+  - SVWebViewController (~> 0.1)
 
 SPEC CHECKSUMS:
   AFNetworking: a6f11ac4ac087303e6ff87adc1ba57b0dac20ef8
   LXReorderableCollectionViewFlowLayout: b4696ccd964061262bb314b88272a7b1110ec00b
+  SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
+  SVWebViewController: 8b32a4b7017bca79799e0fdb0ffc4d47d0769db2
 
-COCOAPODS: 0.26.2
+COCOAPODS: 0.27.1

@@ -53,5 +53,17 @@
 // This library does not follow semantic-versioning,
 // so we were not able to define version macros.
 // Please contact the author.
-// Version: 0.1.0.beta1.
+// Version: HEAD based on 0.1.0.beta1.
+
+// SVProgressHUD
+#define COCOAPODS_POD_AVAILABLE_SVProgressHUD
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 9
+#define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
+
+// SVWebViewController
+#define COCOAPODS_POD_AVAILABLE_SVWebViewController
+#define COCOAPODS_VERSION_MAJOR_SVWebViewController 0
+#define COCOAPODS_VERSION_MINOR_SVWebViewController 2
+#define COCOAPODS_VERSION_PATCH_SVWebViewController 0
 

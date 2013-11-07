@@ -25,8 +25,6 @@
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"C.plist"];
     cameraList = [NSDictionary dictionaryWithContentsOfFile:filePath];
     
-    NSLog(@"cameralist new count: %d", [cameraList count]);
-    
     // if it's nil, there was no file, load from the provided
     if (cameraList == nil)
     {
@@ -45,12 +43,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 - (IBAction)refresh:(id)sender
 {
     CameraDownload *cd = [CameraDownload alloc];
     [cd getFeed];
-    //[self.tableView reloadData];
-
+    
     // refresh with a delay
     [self performSelector:(@selector(refreshDisplay:)) withObject:(tableView) afterDelay:2.0];
 
@@ -350,6 +348,7 @@
     if(indexPath) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+    
 }
 
 @end

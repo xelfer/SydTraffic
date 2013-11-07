@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SVWebViewController.h"
 
 @interface InfoViewController : UIViewController
 {

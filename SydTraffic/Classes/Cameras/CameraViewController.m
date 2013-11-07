@@ -17,7 +17,7 @@
 
 @implementation CameraViewController
 
-@synthesize t, thetitle, thedesc, theurl;
+@synthesize t, thetitle, thedesc, theurl, fave, i, desc, toolBar, background, refresh;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,6 +73,9 @@
                 [favKeys writeToFile:favkeyspath atomically:YES];
                 
                 [fave setImage:[UIImage imageNamed:@"unfave.png"]];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateCollection" object:nil];
+
                 return;
             }
         }
@@ -122,7 +125,35 @@
 
 - (void) updateTrafficImage
 {
-    [i setImageWithURL:[NSURL URLWithString:self.theurl] placeholderImage:[UIImage imageNamed:@"trans.png"]];
+    NSLog(@"refreshing");
+    refresh.enabled = NO;
+    NSURL *imageURL = [NSURL URLWithString:self.theurl];
+    NSURLRequest *imageRequest = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:30];
+	[SVProgressHUD showWithStatus:@"Loading image"];
+    
+    NSLog(@"timeout: %f", imageRequest.timeoutInterval);
+    __weak typeof(UIImageView) *weakImage = i;
+    __weak typeof(self) s = self;
+    [i setImageWithURLRequest:imageRequest
+                      placeholderImage:nil
+                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         
+         
+         [SVProgressHUD dismiss];
+         [weakImage setImage:image];
+         s.refresh.enabled = YES;
+
+     }
+                               failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
+     {
+         [SVProgressHUD dismiss];
+         
+         [weakImage setImage:[UIImage imageNamed:@"errorimage.png"]];
+         s.refresh.enabled = YES;
+
+     }];
+
 }
 
 

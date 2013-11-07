@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FavouriteCell : UICollectionViewCell
+@interface FavouriteCell : UICollectionViewCell {
+    UIActivityIndicatorView *ai;
+}
 
 @property (atomic, strong) IBOutlet UIImageView *imageView;
+@property (atomic, strong) UIActivityIndicatorView *ai;
 
 @end

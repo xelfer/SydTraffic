@@ -33,6 +33,18 @@
 }
 
 
+- (IBAction)license:(id)sender
+{
+
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:@"https://tdx.131500.com.au/terms-conditions.php"];
+    [self presentViewController:webViewController animated:YES completion:nil];
+
+}
+
+-(void)doneButtonClicked:(id)sender
+{
+    
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

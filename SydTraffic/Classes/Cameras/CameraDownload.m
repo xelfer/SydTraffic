@@ -7,9 +7,12 @@
 //
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
-#define kLatestCamerasURL [NSURL URLWithString:@"http://livetraffic.rta.nsw.gov.au/data-2/traffic-cam.json"] //2
+#define kLatestCamerasURL [NSURL URLWithString:@"http://triso.me/sydtraffic/cams.json"] //confirmed working
+#define kLatestCamerasURLRMS [NSURL URLWithString:@"http://triso.me/sydtraffic/traffic-cam.json"] //RMS camera list (requires wget)
+
 
 #import "CameraDownload.h"
+
 
 @implementation CameraDownload
 
@@ -22,12 +25,15 @@
 
 -(void)getFeed
 {
+    [SVProgressHUD showWithStatus:@"Updating camera list from RMS"];
+
     dispatch_async(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL:
                         kLatestCamerasURL];
         [self performSelectorOnMainThread:@selector(fetchedData:)
                                withObject:data waitUntilDone:YES];
     });
+
 }
 
 - (void)fetchedData:(NSData *)responseData {
@@ -52,7 +58,6 @@
         NSArray *coords = [geom objectForKey:@"coordinates"];
         NSNumber *lon = [coords objectAtIndex:0];
         NSNumber *lat = [coords objectAtIndex:1];
-        //NSLog(@"lat: %@, long: %@", lat, lon);
         
         NSDictionary *camprops = [cam objectForKey:@"properties"];
         
@@ -61,10 +66,6 @@
         NSString *camurl  = [camprops objectForKey:@"href"];
         NSString *region =  [camprops objectForKey:@"region"];
         
-        //NSLog(@"camera name: %@", camname);
-        //NSLog(@"camera desc: %@", camdesc);
-        //NSLog(@"camera desc: %@", camurl);
-        //NSLog(@"camera region: %@", region);
         
         [allCameras setObject:camdesc forKey:camname];
 
@@ -94,6 +95,8 @@
     [allCameras writeToFile:filePath atomically:YES];
     NSLog(@"wrote new file");
     
+    [SVProgressHUD showSuccessWithStatus:@"Camera list updated!"];
+
 
     
 }

@@ -7,10 +7,7 @@
 //
 
 #import "FavouritesViewController.h"
-#import "SharedData.h"
-#import "FavouriteCell.h"
-#import "UIImageView+AFNetworking.h"
-#import "CameraViewController.h"
+
 
 
 @interface FavouritesViewController ()
@@ -19,11 +16,23 @@
 
 @implementation FavouritesViewController
 
-@synthesize toolBar, background, collection, faveList, ip, label, image, smallview;
+@synthesize toolBar, background, collection, faveList, ip, label, image, smallview, refreshControl;
 
 - (IBAction)back:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)refresh:(id)sender
+{
+    [self.collection reloadData];
+    [self.collection reloadItemsAtIndexPaths:[self.collection indexPathsForVisibleItems]];
+    [refreshControl endRefreshing];
+}
+
+- (IBAction)info:(id)sender
+{
+    
 }
 
 -(UIStatusBarStyle) preferredStatusBarStyle
@@ -49,10 +58,6 @@
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     [self.collection setCollectionViewLayout:layout];
     
-    NSLog(@"view loaded %@", layout);
-
-    
-    
     // put a transparent image under the status bar to make it translucent but tinted
     UIImageView *coverStatus = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     coverStatus.image = [UIImage imageNamed:@"trans50.png"];
@@ -76,9 +81,24 @@
     // gets rid of the top 1px white border above the toolbar
     self.toolBar.clipsToBounds = YES;
     
-    //[collection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"faveCell"];
+    
+    // update the view when called from the camera view controller (basically to ensure something removed from favourites disappears)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:@"updateCollection" object:nil];
+
+    // add the pull down to refresh thing
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collection addSubview:refreshControl];
+    self.collection.alwaysBounceVertical = YES;
+    refreshControl.tintColor = [UIColor whiteColor];
 
 
+}
+
+
+-(void)refresh {
+    [self.collection reloadData];
+    NSLog(@"what calls this?");
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,7 +142,7 @@
 
     FavouriteCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"faveCell" forIndexPath:indexPath];
     
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [UIColor clearColor];
     
     // fave keys
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -131,9 +151,47 @@
     NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
     NSDictionary *tmpcamera = [faveList objectForKey:[favKeys objectAtIndex:indexPath.row]];
 
-    //NSLog(@"camera processing: %@", [keyArray objectAtIndex:indexPath.row]);
     
-    [cell.imageView setImageWithURL:[NSURL URLWithString:[tmpcamera objectForKey:@"url"]] placeholderImage:[UIImage imageNamed:@"trans50.png"]];
+    //[cell.imageView setImageWithURL:[NSURL URLWithString:[tmpcamera objectForKey:@"url"]] placeholderImage:[UIImage imageNamed:@"trans50.png"]];
+    
+    NSURL *imageURL = [NSURL URLWithString:[tmpcamera objectForKey:@"url"]];
+    NSURLRequest *imageRequest = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60];
+    
+    NSLog(@"timeout: %f", imageRequest.timeoutInterval);
+    
+    //UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    
+    UIActivityIndicatorView *activityIndicator = cell.ai;
+    
+    if (!activityIndicator) {
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    }
+    
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.hidden = NO;
+    activityIndicator.frame = CGRectMake(0, 0, 130, 110);
+    activityIndicator.tag = 10;
+    
+    [cell.imageView addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+
+    __weak typeof(FavouriteCell) *weakImage = cell;
+    [cell.imageView setImageWithURLRequest:imageRequest
+                          placeholderImage:[UIImage imageNamed:@"trans50.png"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *i)
+     {
+         [activityIndicator stopAnimating];
+         activityIndicator.hidden = YES;
+         [weakImage.imageView setImage:i];
+         
+     }
+                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
+     {
+         [activityIndicator stopAnimating];
+         activityIndicator.hidden = YES;
+         [weakImage.imageView setImage:[UIImage imageNamed:@"errorimage.png"]];
+     }];
+    
 
     return cell;
 }
@@ -199,9 +257,6 @@
 }
 
 
-
-
-
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item
 }
@@ -228,8 +283,13 @@
     [super viewWillAppear:animated];
     
     //[self.collection reloadData];
-  
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+    //
+
+}
+
 
 
 
