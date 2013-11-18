@@ -161,6 +161,7 @@
     
     //UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     
+    /*
     UIActivityIndicatorView *activityIndicator = cell.ai;
     
     if (!activityIndicator) {
@@ -173,23 +174,23 @@
     activityIndicator.tag = 10;
     
     [cell.imageView addSubview:activityIndicator];
-    [activityIndicator startAnimating];
+    [activityIndicator startAnimating];*/
 
     __weak typeof(FavouriteCell) *weakImage = cell;
     [cell.imageView setImageWithURLRequest:imageRequest
                           placeholderImage:[UIImage imageNamed:@"trans50.png"]
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *i)
      {
-         [activityIndicator stopAnimating];
-         activityIndicator.hidden = YES;
+         //[activityIndicator stopAnimating];
+         //activityIndicator.hidden = YES;
          [weakImage.imageView setImage:i];
          
      }
                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
      {
-         [activityIndicator stopAnimating];
-         activityIndicator.hidden = YES;
-         [weakImage.imageView setImage:[UIImage imageNamed:@"errorimage.png"]];
+         //[activityIndicator stopAnimating];
+         //activityIndicator.hidden = YES;
+         //[weakImage.imageView setImage:[UIImage imageNamed:@"errorimage.png"]];
      }];
     
 
