@@ -9,7 +9,7 @@
 #import "FavouriteCell.h"
 
 @implementation FavouriteCell
-@synthesize ai;
+@synthesize ai, lab;
 
 - (id)initWithFrame:(CGRect)frame
 {

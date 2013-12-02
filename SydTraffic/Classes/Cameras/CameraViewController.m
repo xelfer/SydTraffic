@@ -125,13 +125,11 @@
 
 - (void) updateTrafficImage
 {
-    NSLog(@"refreshing");
     refresh.enabled = NO;
     NSURL *imageURL = [NSURL URLWithString:self.theurl];
     NSURLRequest *imageRequest = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:30];
 	[SVProgressHUD showWithStatus:@"Loading image"];
     
-    NSLog(@"timeout: %f", imageRequest.timeoutInterval);
     __weak typeof(UIImageView) *weakImage = i;
     __weak typeof(self) s = self;
     [i setImageWithURLRequest:imageRequest

@@ -91,14 +91,11 @@
     [self.collection addSubview:refreshControl];
     self.collection.alwaysBounceVertical = YES;
     refreshControl.tintColor = [UIColor whiteColor];
-
-
 }
 
 
 -(void)refresh {
     [self.collection reloadData];
-    NSLog(@"what calls this?");
 }
 
 - (void)didReceiveMemoryWarning
@@ -150,70 +147,27 @@
     NSString *favkeyspath = [documentsDirectory stringByAppendingPathComponent:@"FK.plist"];
     NSMutableArray *favKeys = [[NSMutableArray alloc] initWithContentsOfFile:favkeyspath];
     NSDictionary *tmpcamera = [faveList objectForKey:[favKeys objectAtIndex:indexPath.row]];
-
-    
-    //[cell.imageView setImageWithURL:[NSURL URLWithString:[tmpcamera objectForKey:@"url"]] placeholderImage:[UIImage imageNamed:@"trans50.png"]];
-    
     NSURL *imageURL = [NSURL URLWithString:[tmpcamera objectForKey:@"url"]];
     NSURLRequest *imageRequest = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60];
     
-    NSLog(@"timeout: %f", imageRequest.timeoutInterval);
-    
-    //UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    
-    /*
-    UIActivityIndicatorView *activityIndicator = cell.ai;
-    
-    if (!activityIndicator) {
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    }
-    
-    activityIndicator.hidesWhenStopped = YES;
-    activityIndicator.hidden = NO;
-    activityIndicator.frame = CGRectMake(0, 0, 130, 110);
-    activityIndicator.tag = 10;
-    
-    [cell.imageView addSubview:activityIndicator];
-    [activityIndicator startAnimating];*/
-
     __weak typeof(FavouriteCell) *weakImage = cell;
     [cell.imageView setImageWithURLRequest:imageRequest
                           placeholderImage:[UIImage imageNamed:@"trans50.png"]
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *i)
      {
-         //[activityIndicator stopAnimating];
-         //activityIndicator.hidden = YES;
          [weakImage.imageView setImage:i];
          
      }
                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
      {
-         //[activityIndicator stopAnimating];
-         //activityIndicator.hidden = YES;
-         //[weakImage.imageView setImage:[UIImage imageNamed:@"errorimage.png"]];
+         
      }];
     
-
+    [cell.lab setText:[tmpcamera objectForKey:@"name"]];
+    
     return cell;
 }
 
-/*
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"faveCell";
-    
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    
-    UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    recipeImageView.image = [UIImage imageNamed:@"bg1.png"];
-    
-    return cell;
-}*/
-
-// 4
-/*- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
- return [[UICollectionReusableView alloc] init];
-}*/
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath
 {

@@ -13,6 +13,7 @@
 }
 
 @property (atomic, strong) IBOutlet UIImageView *imageView;
+@property (atomic, strong) IBOutlet UILabel *lab;
 @property (atomic, strong) UIActivityIndicatorView *ai;
 
 @end
